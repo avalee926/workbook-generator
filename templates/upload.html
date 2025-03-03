@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Workbook Generator</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}"></head>
+<body>
+  <header>
+    <h1>Workbook Generator</h1>
+  </header>
+
+  <div class="form-container">
+    <form id="workbook-form" action="/generate" method="post" enctype="multipart/form-data">
+      <p>
+        <label>
+          <input type="radio" name="mode" value="individual" checked onchange="toggleMode()"> 
+          Individual Workbook
+        </label>
+        <label>
+          <input type="radio" name="mode" value="batch" onchange="toggleMode()"> 
+          Batch Workbook Generation
+        </label>
+      </p>
+
+      <!-- Template Selection Dropdown -->
+      <p>
+        <label for="template">Select Template:</label>
+        <select name="template" id="template" required>
+          <option value="Open">Open</option>
+          <option value="Team">Team</option>
+          <option value="Tiny">Tiny</option>
+        </select>
+      </p>
+
+      <!-- Individual Workbook Section -->
+      <div id="individual-section" class="mode-section">
+        <h2>Individual Workbook</h2>
+        <p>
+          <label for="participantName">Participant Name:</label>
+          <input type="text" name="participantName" placeholder="eg. John Doe" id="participantName" required>
+        </p>
+        <p>
+          <label for="date">Date:</label>
+          <input type="text" name="date" id="date" placeholder="eg. Winter 2025" required>
+        </p>
+        <p>
+          <label for="cohort">Cohort Name:</label>
+          <input type="text" name="cohort" placeholder="eg. Case Western" id="cohort" required>
+        </p>
+        <p>
+          <label for="viaFile">Upload VIA Report PDF:</label>
+          <input type="file" name="viaFile" id="viaFile" accept=".pdf" required>
+        </p>
+        <p>
+          <label for="conflictCSV">Upload Conflict Resolution Quiz Result CSV:</label>
+          <input type="file" name="conflictCSV" id="conflictCSV" accept=".csv" required>
+        </p>
+      </div>
+
+      <!-- Batch Workbook Section -->
+      <div id="batch-section" class="mode-section">
+        <h2>Batch Workbook Generation</h2>
+        <p>
+          <label for="batchDate">Date:</label>
+          <input type="text" name="batchDate" id="batchDate" placeholder="eg. Winter 2025" required>
+        </p>
+        <p>
+          <label for="batchCohort">Cohort Name:</label>
+          <input type="text" name="batchCohort" id="batchCohort" placeholder="eg. Case Western" required>
+        </p>
+        <p>
+          <label for="viaFiles">Upload VIA Report PDFs (Select Multiple):</label>
+          <input type="file" name="viaFiles" id="viaFiles" accept=".pdf" multiple required>
+        </p>
+        <p>
+          <label for="conflictCSVBatch">Upload Conflict Resolution Quiz Result CSV:</label>
+          <input type="file" name="conflictCSVBatch" id="conflictCSVBatch" accept=".csv" required>
+        </p>
+      </div>
+
+      <p>
+        <input type="submit" value="Generate Workbooks">
+      </p>
+    </form>
+  </div>
+
+  <!-- Loading Spinner -->
+  <div id="loading" class="loading">
+    <div class="spinner"></div>
+    <p>Generating workbooks...</p>
+  </div>
+
+  <script>
+    function toggleMode() {
+      const mode = document.querySelector('input[name="mode"]:checked').value;
+      const individualSection = document.getElementById("individual-section");
+      const batchSection = document.getElementById("batch-section");
+
+      if (mode === "individual") {
+        individualSection.style.display = "block";
+        batchSection.style.display = "none";
+
+        // Disable required attributes for batch inputs
+        document.getElementById("batchDate").removeAttribute("required");
+        document.getElementById("batchCohort").removeAttribute("required");
+        document.getElementById("viaFiles").removeAttribute("required");
+        document.getElementById("conflictCSVBatch").removeAttribute("required");
+
+        // Enable required attributes for individual inputs
+        document.getElementById("participantName").setAttribute("required", "");
+        document.getElementById("date").setAttribute("required", "");
+        document.getElementById("cohort").setAttribute("required", "");
+        document.getElementById("viaFile").setAttribute("required", "");
+        document.getElementById("conflictCSV").setAttribute("required", "");
+      } else {
+        individualSection.style.display = "none";
+        batchSection.style.display = "block";
+
+        // Enable required attributes for batch inputs
+        document.getElementById("batchDate").setAttribute("required", "");
+        document.getElementById("batchCohort").setAttribute("required", "");
+        document.getElementById("viaFiles").setAttribute("required", "");
+        document.getElementById("conflictCSVBatch").setAttribute("required", "");
+
+        // Disable required attributes for individual inputs
+        document.getElementById("participantName").removeAttribute("required");
+        document.getElementById("date").removeAttribute("required");
+        document.getElementById("cohort").removeAttribute("required");
+        document.getElementById("viaFile").removeAttribute("required");
+        document.getElementById("conflictCSV").removeAttribute("required");
+      }
+    }
+
+    // Initialize form display
+    toggleMode();
+
+    // Show loading spinner on form submission
+    document.getElementById("workbook-form").addEventListener("submit", function () {
+      document.getElementById("loading").style.display = "block";
+    });
+  </script>
+</body>
+</html>

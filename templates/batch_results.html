@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Batch Results</title>
+</head>
+<body>
+    <h1>Batch Workbook Generation Results</h1>
+
+    <h2>Completed Workbooks</h2>
+    <ul>
+        {% for workbook in completed_workbooks %}
+            <li><a href="{{ url_for('download_file', filename=workbook.split('/')[-1]) }}">{{ workbook.split('/')[-1] }}</a></li>
+        {% endfor %}
+    </ul>
+
+    <p>
+        <a href="{{ url_for('download_all') }}">
+            <button>Download All Workbooks (ZIP)</button>
+        </a>
+    </p>
+
+    <h2>Missing VIA Reports</h2>
+    <ul>
+        {% for name in missing_via_reports %}
+            <li>{{ name }}</li>
+        {% endfor %}
+    </ul>
+
+    <h2>Missing VIA Reports</h2>
+    {% if missing_via_reports %}
+        <ul>
+        {% for name in missing_via_reports %}
+            <li>{{ name }}</li>
+        {% endfor %}
+        </ul>
+    {% else %}
+        <p>All participants had a matching VIA report.</p>
+    {% endif %}
+
+    <p><a href="/">Back to Upload Page</a></p>
+</body>
+</html>
