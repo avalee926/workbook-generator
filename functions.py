@@ -224,7 +224,6 @@ def convert_to_pdf_via_libreoffice(docx_path, output_dir=None):
     if output_dir is None:
         output_dir = os.path.dirname(docx_path) or "."
     
-    # Use "libreoffice" which should be available on Linux
     command = [
         "libreoffice",
         "--headless",
@@ -235,6 +234,7 @@ def convert_to_pdf_via_libreoffice(docx_path, output_dir=None):
     subprocess.run(command, check=True)
     pdf_path = os.path.join(output_dir, os.path.splitext(os.path.basename(docx_path))[0] + ".pdf")
     return pdf_path
+
 
 
 
@@ -303,24 +303,6 @@ import subprocess
 # Assuming SCORE_MAP and QUESTION_CATEGORIES are defined elsewhere in your module.
 # Also assuming convert_to_pdf_via_libreoffice is defined as follows:
 
-def convert_to_pdf_via_libreoffice(docx_path, output_dir=None):
-    """
-    Converts a DOCX file to PDF using LibreOffice in headless mode.
-    Returns the path to the converted PDF.
-    """
-    if output_dir is None:
-        output_dir = os.path.dirname(docx_path) or "."
-    
-    command = [
-        "libreoffice",
-        "--headless",
-        "--convert-to", "pdf",
-        docx_path,
-        "--outdir", output_dir
-    ]
-    subprocess.run(command, check=True)
-    pdf_path = os.path.join(output_dir, os.path.splitext(os.path.basename(docx_path))[0] + ".pdf")
-    return pdf_path
 
 def fill_conflict_docs(csv_path, template_path, output_dir="."):
     """
@@ -566,29 +548,7 @@ import os
 from docxtpl import DocxTemplate
 import subprocess
 
-def convert_to_pdf_via_libreoffice(docx_path, output_dir=None):
-    if output_dir is None:
-        output_dir = os.path.dirname(docx_path) or "."
 
-    # Full path to soffice in the LibreOffice app bundle:
-    soffice_path = "/Applications/LibreOffice.app/Contents/MacOS/soffice"
-    # If you installed via Homebrew, it might be at:
-    # /Applications/LibreOffice.app/Contents/MacOS/soffice
-    # or
-    # /usr/local/bin/libreoffice
-    # Adjust as needed.
-
-    command = [
-        soffice_path,
-        "--headless",
-        "--convert-to", "pdf",
-        docx_path,
-        "--outdir", output_dir
-    ]
-    subprocess.run(command, check=True)
-
-    pdf_path = os.path.join(output_dir, os.path.splitext(os.path.basename(docx_path))[0] + ".pdf")
-    return pdf_path
 
 
 def generate_cover_pdf(participant_name=None,
