@@ -224,7 +224,7 @@ def convert_to_pdf_via_libreoffice(docx_path, output_dir=None):
     if output_dir is None:
         output_dir = os.path.dirname(docx_path) or "."
     
-    # Use the Linux command "libreoffice" instead of a hard-coded macOS path.
+    # Use "libreoffice" which should be available on Linux
     command = [
         "libreoffice",
         "--headless",
@@ -235,6 +235,7 @@ def convert_to_pdf_via_libreoffice(docx_path, output_dir=None):
     subprocess.run(command, check=True)
     pdf_path = os.path.join(output_dir, os.path.splitext(os.path.basename(docx_path))[0] + ".pdf")
     return pdf_path
+
 
 
 def fill_template(parsed_strengths, strength_data, person_name, template_path, output_docx_path):
