@@ -11,18 +11,31 @@ from fuzzywuzzy import fuzz
 def convert_to_pdf_via_libreoffice(docx_path, output_dir=None):
     if output_dir is None:
         output_dir = os.path.dirname(docx_path) or "."
-
-    # Use "libreoffice-fresh" which should be available in your Replit environment per shell.nix.
+    
+    # First, try using the "soffice" command
     command = [
-        "libreoffice",
+        "soffice",
         "--headless",
         "--convert-to", "pdf",
         docx_path,
         "--outdir", output_dir
     ]
-    subprocess.run(command, check=True)
+    try:
+        subprocess.run(command, check=True)
+    except FileNotFoundError:
+        # If "soffice" is not found, try using "libreoffice"
+        print("Command 'soffice' not found; trying 'libreoffice'...")
+        command = [
+            "libreoffice",
+            "--headless",
+            "--convert-to", "pdf",
+            docx_path,
+            "--outdir", output_dir
+        ]
+        subprocess.run(command, check=True)
     pdf_path = os.path.join(output_dir, os.path.splitext(os.path.basename(docx_path))[0] + ".pdf")
     return pdf_path
+
 
 
 
