@@ -26,4 +26,4 @@ EXPOSE 8000
 
 # Start the app with Gunicorn
 # Use a shell to expand the $PORT environment variable
-CMD ["sh", "-c", "gunicorn app3:app --bind 0.0.0.0:$PORT"]
+CMD ["sh", "-c", "gunicorn app3:app --bind 0.0.0.0:$PORT --timeout 360"]
