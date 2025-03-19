@@ -1,10 +1,10 @@
 # Use an official Python slim image
 FROM python:3.11-slim
 
-# Install system dependencies including LibreOffice
+# Install system dependencies including LibreOffice and Java
 RUN apt-get update && apt-get install -y --no-install-recommends \
     libreoffice \
-    # Clean up to reduce image size
+    default-jre \  # Install Java Runtime Environment for LibreOffice
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
